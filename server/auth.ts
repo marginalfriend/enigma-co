@@ -6,7 +6,7 @@ export type Nasabah = {
 	phoneNumber: string;
 	address: string;
 	nik: string;
-	birthDate: Date | string;
+	birthDate: string;
 	userName: string;
 	password: string;
 	roles?: string

@@ -6,7 +6,7 @@ import {
   DateTimePickerAndroid,
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import React, { useState } from "react";
 import {
   Alert,
@@ -19,7 +19,8 @@ import {
 } from "react-native";
 
 const SignUp = () => {
-  const initialState = {
+  const initialState: Nasabah = {
+    fullName: "",
     email: "",
     phoneNumber: "",
     address: "",
@@ -37,7 +38,7 @@ const SignUp = () => {
     const currentDate = selectedDate;
     if (currentDate) {
       setDate(currentDate);
-      setFormValues({ ...formValues, birthDate: currentDate.toDateString() });
+      setFormValues({ ...formValues, birthDate: formatDate(currentDate) });
     }
   };
 
@@ -62,6 +63,16 @@ const SignUp = () => {
       const res = await signUp(formValues);
       console.log(res);
       setFormValues(initialState);
+      Alert.alert(
+        "Welcome!",
+        "You've signed up successfully, please sign in to confirm your account.",
+        [
+          {
+            text: "Sign In",
+            onPress: () => router.replace("/sign-in"),
+          },
+        ]
+      );
     } catch (error: any) {
       Alert.alert("Error", error.message);
     } finally {
@@ -91,15 +102,24 @@ const SignUp = () => {
               </Link>
             </View>
             <FormField
+              placeHolder="John Doe"
+              formStyles="w-full mt-5"
+              keyboardType="default"
+              title={"Full Name"}
+              value={formValues.fullName}
+              handleChange={(e) => setFormValues({ ...formValues, fullName: e })}
+            />
+            <FormField
               placeHolder="yourname@yourcompany.com"
               formStyles="w-full mt-5"
+              keyboardType="email-address"
               title={"Email"}
               value={formValues.email}
               handleChange={(e) => setFormValues({ ...formValues, email: e })}
             />
             <FormField
               placeHolder="0855 5555 5555"
-              keyboardType="numeric"
+              keyboardType="phone-pad"
               formStyles="w-full mt-5"
               title={"Phone Number"}
               value={formValues.phoneNumber}
@@ -132,7 +152,7 @@ const SignUp = () => {
                   !formValues.birthDate && "text-[#6C757D]"
                 } font-light`}
               >
-                {formValues.birthDate ? formValues.birthDate : "Jan 1, 2003"}
+                {formValues.birthDate ? date.toDateString() : "Jan 1, 2003"}
               </Text>
             </TouchableOpacity>
             <FormField

@@ -1,11 +1,47 @@
-import React from "react";
-import { Text, Image, SafeAreaView, ScrollView, View } from "react-native";
+import React, { useState } from "react";
+import {
+  Text,
+  Image,
+  SafeAreaView,
+  ScrollView,
+  View,
+  Alert,
+} from "react-native";
 import Images from "@/constants/Images";
 import FormField from "@/components/FormField";
 import ThemedButton from "@/components/ThemedButton";
 import { Link } from "expo-router";
+import { Nasabah, signUp } from "@/server/auth";
 
-const SignIn = () => {
+const SignUp = () => {
+  const [formValues, setFormValues] = useState<Nasabah>({
+    email: "",
+    phoneNumber: "",
+    address: "",
+    nik: "",
+    birthDate: "",
+    userName: "",
+    password: "",
+  });
+
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+
+    try {
+
+      const res = await signUp(formValues);
+
+    } catch (error: any) {
+
+      Alert.alert("Error", error.message);
+
+    }
+  };
+
   return (
     <SafeAreaView className="h-full">
       <ScrollView>
@@ -24,18 +60,56 @@ const SignIn = () => {
             <FormField
               formStyles="w-full mt-5"
               title={"Email"}
-              value={""}
-              handleChange={function (text: string): void {
-                throw new Error("Function not implemented.");
-              }}
+              value={formValues.email}
+              handleChange={(e) => setFormValues({ ...formValues, email: e })}
+            />
+            <FormField
+              formStyles="w-full mt-5"
+              title={"Phone Number"}
+              value={formValues.phoneNumber}
+              handleChange={(e) =>
+                setFormValues({ ...formValues, phoneNumber: e })
+              }
+            />
+            <FormField
+              formStyles="w-full mt-5"
+              title={"Address"}
+              value={formValues.address}
+              handleChange={(e) => setFormValues({ ...formValues, address: e })}
+            />
+            <FormField
+              formStyles="w-full mt-5"
+              title={"NIK"}
+              value={formValues.nik}
+              handleChange={(e) => setFormValues({ ...formValues, nik: e })}
+            />
+            {/* <FormField
+              formStyles="w-full mt-5"
+              title={"Birth Date"}
+              value={formValues.birthDate}
+              handleChange={(e) => setFormValues({ ...formValues, birthDate: e })}
+            /> */}
+            <FormField
+              formStyles="w-full mt-5"
+              title={"Username"}
+              value={formValues.userName}
+              handleChange={(e) =>
+                setFormValues({ ...formValues, userName: e })
+              }
             />
             <FormField
               formStyles="w-full mt-5"
               title={"Password"}
-              value={""}
-              handleChange={function (text: string): void {
-                throw new Error("Function not implemented.");
-              }}
+              value={formValues.password}
+              handleChange={(e) =>
+                setFormValues({ ...formValues, password: e })
+              }
+            />
+            <FormField
+              formStyles="w-full mt-5"
+              title={"Confirm Password"}
+              value={confirmPassword}
+              handleChange={(e) => setConfirmPassword(e)}
             />
             <ThemedButton
               text={"Sign Up"}
@@ -58,4 +132,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;

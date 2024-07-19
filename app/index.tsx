@@ -8,6 +8,7 @@ import {
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import Images from "@/constants/Images";
+import { router } from "expo-router";
 
 const Index = () => {
   return (
@@ -21,7 +22,7 @@ const Index = () => {
         <Text className="font-normal text-lg mt-4">
           Your one stop financial solution
         </Text>
-        <TouchableOpacity className="mt-32 bg-secondary px-6 py-3 rounded-full">
+        <TouchableOpacity onPress={() => router.push('/sign-in')} className="mt-32 bg-secondary px-6 py-3 rounded-full">
           <Text className="text-white font-medium text-lg">Get Started</Text>
         </TouchableOpacity>
       </View>

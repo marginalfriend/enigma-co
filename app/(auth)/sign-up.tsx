@@ -26,7 +26,7 @@ const SignUp = () => {
     address: "",
     nik: "",
     birthDate: "",
-    userName: "",
+    username: "",
     password: "",
   };
   const [formValues, setFormValues] = useState<Nasabah>(initialState);
@@ -38,7 +38,8 @@ const SignUp = () => {
     const currentDate = selectedDate;
     if (currentDate) {
       setDate(currentDate);
-      setFormValues({ ...formValues, birthDate: formatDate(currentDate) });
+      setFormValues({ ...formValues, birthDate: currentDate.toISOString() });
+      console.log(formatDate(currentDate));
     }
   };
 
@@ -84,15 +85,15 @@ const SignUp = () => {
     <SafeAreaView className="h-full">
       <ScrollView>
         <View className="w-full items-center h-full min-h-[85vh] px-4 py-10 my-6 justify-center">
-          <View className="flex flex-row gap-2 pt-10 items-center">
-            <Image source={Images.logo} className="w-10 h-10" />
-            <Text className="text-2xl font-medium">Enigma Corp</Text>
+          <View className="flex flex-row gap-2 items-center">
+            <Image source={Images.logo} className="w-20 h-20" />
+            <Text className="text-4xl font-medium">Enigma Corp</Text>
           </View>
-          <Text className="text-lg font-normal pt-5">
+          <Text className="text-lg font-normal pt-3">
             Purchase first, pay later
           </Text>
           <View className="pt-12">
-            <Text className="text-center font-bold text-3xl px-16">
+            <Text className="text-center font-semibold text-3xl px-16">
               Sign Up to Enigma Corp
             </Text>
             <View className="justify-center pt-5 flex flex-row gap-2">
@@ -107,7 +108,9 @@ const SignUp = () => {
               keyboardType="default"
               title={"Full Name"}
               value={formValues.fullName}
-              handleChange={(e) => setFormValues({ ...formValues, fullName: e })}
+              handleChange={(e) =>
+                setFormValues({ ...formValues, fullName: e })
+              }
             />
             <FormField
               placeHolder="yourname@yourcompany.com"
@@ -159,13 +162,13 @@ const SignUp = () => {
               placeHolder="yourname"
               formStyles="w-full mt-5"
               title={"Username"}
-              value={formValues.userName}
+              value={formValues.username}
               handleChange={(e) =>
-                setFormValues({ ...formValues, userName: e })
+                setFormValues({ ...formValues, username: e })
               }
             />
             <FormField
-              placeHolder="password"
+              placeHolder="**********"
               formStyles="w-full mt-5"
               title={"Password"}
               value={formValues.password}

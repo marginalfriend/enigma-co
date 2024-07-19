@@ -19,14 +19,6 @@ export type AuthRequest = {
 	password: string;
 }
 
-function getSecret() {
-	const secret = process.env.JWT_SECRET;
-
-	if (!secret) throw new Error("JWT Secret not configured");
-
-	return secret
-}
-
 export async function signUp(request: Nasabah) {
 	try {
 
@@ -63,17 +55,18 @@ export async function signIn(request: AuthRequest) {
 			body: JSON.stringify(request),
 		}
 		const res = await fetch(`${BASE_URL}/auth/signin`, options)
+
 		const { data, message } = await res.json()
 
 		if (!res.ok) {
 			throw new Error(message)
 		}
 
-		const key = getSecret()
+		const key = process.env.EXPO_PUBLIC_JWT_SECRET; // Remove for deployment
 
-		const decoded = JWT.decode(data, key)
+		if (!key) throw new Error("Key not configured.");
 
-		console.log(decoded)
+		const decoded = JWT.decode(data, key);
 
 		return decoded
 

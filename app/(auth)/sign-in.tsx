@@ -12,6 +12,7 @@ import FormField from "@/components/FormField";
 import ThemedButton from "@/components/ThemedButton";
 import { Link } from "expo-router";
 import { AuthRequest, signIn } from "@/server/auth";
+import JWT from "expo-jwt";
 
 const SignIn = () => {
   const initialState: AuthRequest = {
@@ -27,8 +28,6 @@ const SignIn = () => {
 
     try {
       const res = await signIn(formValues);
-			console.log(res);
-			
       setFormValues(initialState);
     } catch (error: any) {
       Alert.alert("Error", error.message);

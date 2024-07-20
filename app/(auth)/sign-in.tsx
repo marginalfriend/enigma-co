@@ -10,9 +10,10 @@ import {
 import Images from "@/constants/Images";
 import FormField from "@/components/FormField";
 import ThemedButton from "@/components/ThemedButton";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { AuthRequest, signIn } from "@/server/auth";
 import JWT from "expo-jwt";
+import { useAuth } from "@/context/AuthProvider";
 
 const SignIn = () => {
   const initialState: AuthRequest = {
@@ -20,6 +21,7 @@ const SignIn = () => {
     password: "",
   };
 
+  const { setAccessToken } = useAuth();
   const [formValues, setFormValues] = useState<AuthRequest>(initialState);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -28,7 +30,9 @@ const SignIn = () => {
 
     try {
       const res = await signIn(formValues);
+      setAccessToken(res);
       setFormValues(initialState);
+      router.replace("/home");
     } catch (error: any) {
       Alert.alert("Error", error.message);
     } finally {

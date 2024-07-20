@@ -1,5 +1,5 @@
 import { BASE_URL } from "@/constants/URL";
-import JWT from "expo-jwt";
+import * as SecureStore from "expo-secure-store";
 
 export type Nasabah = {
 	id?: string;
@@ -62,13 +62,9 @@ export async function signIn(request: AuthRequest) {
 			throw new Error(message)
 		}
 
-		const key = process.env.EXPO_PUBLIC_JWT_SECRET; // Remove for deployment
+		await SecureStore.setItemAsync("auth", data)
 
-		if (!key) throw new Error("Key not configured.");
-
-		const decoded = JWT.decode(data, key);
-
-		return decoded
+		return data
 
 	} catch (error: any) {
 
